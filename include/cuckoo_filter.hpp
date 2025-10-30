@@ -9,6 +9,7 @@ struct FilterConfig
 {
     unsigned int filterSize = 2 << 16;
     unsigned int maxCycles = 2 << 8;
+    bool resizable = true;
 };
 
 class CuckooFilter

@@ -1,4 +1,5 @@
 #include "../include/cuckoo_filter.hpp"
+#include "../include/exceprions.hpp"
 
 #include <functional>
 #include <cstdlib>
@@ -52,7 +53,8 @@ void CuckooFilter::_Insert(size_t hash1, size_t fingerprint)
             size_t hash2 = (hash1 ^ fingerprint) % _configuration.filterSize;
             if (row2[hash2] != 0 && row2[hash2] != fingerprint)
             {
-                elements.insert(std::make_pair(hash1, fingerprint));
+                if (_configuration.resizable)
+                    elements.insert(std::make_pair(hash1, fingerprint));
                 if (std::rand() % 2)
                 {
                     size_t new_fingerprint = row2[hash2];
@@ -79,7 +81,10 @@ void CuckooFilter::_Insert(size_t hash1, size_t fingerprint)
             return;
         }
     }
-    _Resize();
+    if (_configuration.resizable)
+        _Resize();
+    else
+        throw FilterOverflowException("Filter was overflowed");
 }
 
 void CuckooFilter::_Resize()
@@ -111,6 +116,8 @@ void CuckooFilter::Delete(std::string element)
         if (row2[hash2] == fingerprint)
             row2[hash2] = 0;
     }
+    if (_configuration.resizable)
+        elements.erase(std::make_pair(hash1, fingerprint));
 }
 
 size_t CuckooFilter::_Fingerprint(std::string element)
