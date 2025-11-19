@@ -7,9 +7,9 @@
 
 struct FilterConfig
 {
-    unsigned int filterSize = 2 << 16;
-    unsigned int maxCycles = 2 << 8;
-    bool resizable = true;
+    size_t filterSize = 2 << 16;
+    size_t maxCycles = 2 << 8;
+    bool resizable = false;
 };
 
 class CuckooFilter
@@ -18,7 +18,6 @@ public:
     CuckooFilter(FilterConfig config = FilterConfig());
     ~CuckooFilter();
     FilterConfig GetConfiguration();
-    void SetConfiguration(FilterConfig config);
 
     void Insert(std::string element);
     void Delete(std::string element);

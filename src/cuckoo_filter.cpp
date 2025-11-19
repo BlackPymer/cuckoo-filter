@@ -31,11 +31,6 @@ FilterConfig CuckooFilter::GetConfiguration()
     return _configuration;
 }
 
-void CuckooFilter::SetConfiguration(FilterConfig config)
-{
-    _configuration = config;
-}
-
 void CuckooFilter::Insert(std::string element)
 {
     size_t hash1 = std::hash<std::string>{}(element);
@@ -122,5 +117,5 @@ void CuckooFilter::Delete(std::string element)
 
 size_t CuckooFilter::_Fingerprint(std::string element)
 {
-    return (std::hash<std::string>{}(element) >> 8) & 0xFF;
+    return (std::hash<std::string>{}(element) >> 16) & 0xFFFF;
 }

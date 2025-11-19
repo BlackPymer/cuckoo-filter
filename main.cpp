@@ -97,7 +97,7 @@ void self_check()
 
 int main()
 {
-    test_filter(10000);
+    test_filter(2 << 16);
     self_check();
     return 0;
 }
